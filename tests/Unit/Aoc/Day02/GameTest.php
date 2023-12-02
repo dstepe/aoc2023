@@ -32,4 +32,11 @@ class GameTest extends TestCase
 
         $this->assertCount(2, $hands);
     }
+
+    public function testCalculatesPowerOfHands(): void
+    {
+        $game = Game::fromInput('Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green');
+
+        $this->assertEquals(48, $game->cubeSet()->power());
+    }
 }

@@ -41,6 +41,23 @@ class Game
         return $this->hands->filter($filter);
     }
 
+    public function cubeSet(): CubeSet
+    {
+        $red = $this->hands->max(function (Hand $hand) {
+            return $hand->red();
+        });
+
+        $green = $this->hands->max(function (Hand $hand) {
+            return $hand->green();
+        });
+
+        $blue = $this->hands->max(function (Hand $hand) {
+            return $hand->blue();
+        });
+
+        return new CubeSet($red, $green, $blue);
+    }
+
     private function parseInput(): void
     {
         $this->id = $this->findGameId();

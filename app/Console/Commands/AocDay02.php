@@ -38,6 +38,10 @@ class AocDay02 extends AocDay
 
         $this->output->info(sprintf('Total: %s', $total));
 
+        $power = $tracker->power();
+
+        $this->output->info(sprintf('Power: %s', $power));
+
         return Command::SUCCESS;
     }
 

@@ -39,4 +39,18 @@ class GameTally
             return $total;
         }, 0);
     }
+
+    public function powerTotal(): int
+    {
+        /** @var Collection $cubeSets */
+        $cubeSets = $this->games->reduce(function (Collection $sets, Game $game) {
+            $sets->add($game->cubeSet());
+            return $sets;
+        }, new Collection());
+
+        return $cubeSets->reduce(function (int $total, CubeSet $cubeSet) {
+            $total += $cubeSet->power();
+            return $total;
+        }, 0);
+    }
 }

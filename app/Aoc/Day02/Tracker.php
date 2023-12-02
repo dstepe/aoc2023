@@ -32,4 +32,9 @@ class Tracker
                 })->count() === 0;
         });
     }
+
+    public function power(): int
+    {
+        return $this->gameTally->powerTotal();
+    }
 }

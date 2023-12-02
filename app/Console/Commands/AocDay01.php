@@ -30,8 +30,6 @@ class AocDay01 extends AocDay
      */
     public function handle()
     {
-        $top = $this->option('top');
-
         $calibrator = new Calibrator($this->getDayInputFile());
 
         $calibrator->calibrate();
