@@ -25,4 +25,26 @@ class CalibratorTest extends TestCase
             'treb7uchet',
         ]);
     }
+
+    public function testGetsTotalOfDigitsWithSpellings(): void
+    {
+        $calibrator = new Calibrator($this->getInputWithSpellings());
+
+        $calibrator->calibrate();
+
+        $this->assertEquals(281, $calibrator->total());
+    }
+
+    private function getInputWithSpellings(): \Iterator
+    {
+        return new \ArrayIterator([
+            'two1nine',
+            'eightwothree',
+            'abcone2threexyz',
+            'xtwone3four',
+            '4nineeightseven2',
+            'zoneight234',
+            '7pqrstsixteen',
+        ]);
+    }
 }
