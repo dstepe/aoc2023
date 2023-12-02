@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Aoc\Day01\Calibrator;
+use App\Aoc\Day02\Tracker;
 use Illuminate\Console\Command;
 
-class AocDayOne extends AocDay
+class AocDay02 extends AocDay
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'aoc:1 {--top=1}';
+    protected $signature = 'aoc:2';
 
     /**
      * The console command description.
@@ -21,7 +21,7 @@ class AocDayOne extends AocDay
      */
     protected $description = 'Command description';
 
-    protected $day = 1;
+    protected $day = 2;
 
     /**
      * Execute the console command.
@@ -30,13 +30,11 @@ class AocDayOne extends AocDay
      */
     public function handle()
     {
-        $top = $this->option('top');
+        $tracker = new Tracker($this->getDayInputFile());
 
-        $calibrator = new Calibrator($this->getDayInputFile());
+        $tracker->track();
 
-        $calibrator->calibrate();
-
-        $total = $calibrator->total();
+        $total = $tracker->total();
 
         $this->output->info(sprintf('Total: %s', $total));
 
