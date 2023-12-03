@@ -32,12 +32,12 @@ class CalibrationLine
 
     private function getFirstDigit(): string
     {
-        return $this->getDigitsFromLine(str_split($this->line), $this->map);
+        return $this->getFirstDigitFromLine(str_split($this->line), $this->map);
     }
 
     private function getLastDigit(): string
     {
-        return $this->getDigitsFromLine(array_reverse(str_split($this->line)), $this->reverseSpellingKeys());
+        return $this->getFirstDigitFromLine(array_reverse(str_split($this->line)), $this->reverseSpellingKeys());
     }
 
     private function reverseSpellingKeys(): array
@@ -48,7 +48,7 @@ class CalibrationLine
         }, []);
     }
 
-    private function getDigitsFromLine(array $characters, array $map): int
+    private function getFirstDigitFromLine(array $characters, array $map): int
     {
         $candidate = '';
         foreach ($characters as $character) {
