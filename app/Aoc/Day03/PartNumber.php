@@ -25,4 +25,14 @@ class PartNumber
             return $c;
         }, '');
     }
+
+    public function isAdjacentToPoint(Point $point): bool
+    {
+        return $this->points->reduce(function (bool $isAdjacent, Point $member) use ($point) {
+            if ($member->isNeighbor($point)) {
+                $isAdjacent = true;
+            }
+            return $isAdjacent;
+        }, false);
+    }
 }

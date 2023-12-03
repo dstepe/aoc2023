@@ -38,17 +38,34 @@ class Schematic
 
     public function total(): int
     {
-        $partNumbers = $this->partNumberGenerator->partNumbers()->filter(function (PartNumber $partNumber) {
-            return $partNumber->points()->reduce(function (bool $c, Point $point) {
-                if ($this->pointAdjacentToSymbol($point)) {
-                    $c = true;
-                }
-                return $c;
-            }, false);
-        });
-
-        return $partNumbers->sum(function (PartNumber $partNumber) {
+        return $this->partNumbers()->sum(function (PartNumber $partNumber) {
             return $partNumber->value();
+        });
+    }
+
+    public function gearRatioTotal(): int
+    {
+        $partNumbers = $this->partNumbers();
+
+        $gearPoints = $this->gearPoints();
+
+        /** @var Collection $gears */
+        $gears = $gearPoints->reduce(function (Collection $c, Point $point) use ($partNumbers) {
+            $adjacentPartNumbers = $partNumbers->filter(function (PartNumber $partNumber) use ($point) {
+                return $partNumber->isAdjacentToPoint($point);
+            });
+
+            if ($adjacentPartNumbers->count() === 2) {
+                $c->add($adjacentPartNumbers);
+            }
+
+            return $c;
+        }, new Collection());
+
+        return $gears->sum(function (Collection $partNumbers) {
+            $a = $partNumbers->shift();
+            $b = $partNumbers->shift();
+            return $a->value() * $b->value();
         });
     }
 
@@ -60,6 +77,18 @@ class Schematic
             }
             return $isAdjacent;
         }, false);
+    }
+
+    private function partNumbers(): Collection
+    {
+        return $this->partNumberGenerator->partNumbers()->filter(function (PartNumber $partNumber) {
+            return $partNumber->points()->reduce(function (bool $c, Point $point) {
+                if ($this->pointAdjacentToSymbol($point)) {
+                    $c = true;
+                }
+                return $c;
+            }, false);
+        });
     }
 
     private function neighbors(Point $point): Collection
@@ -114,5 +143,12 @@ class Schematic
         }
 
         return $neighbors;
+    }
+
+    private function gearPoints(): Collection
+    {
+        return $this->rows->reduce(function (Collection $c, Row $row) {
+            return $c->merge($row->gearPoints());
+        }, new Collection());
     }
 }

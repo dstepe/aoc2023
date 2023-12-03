@@ -34,4 +34,11 @@ class Row
     {
         return $this->points->count();
     }
+
+    public function gearPoints(): Collection
+    {
+        return $this->points->filter(function (Point $point) {
+            return $point->isGear();
+        });
+    }
 }

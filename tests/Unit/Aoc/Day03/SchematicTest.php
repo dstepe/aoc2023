@@ -36,6 +36,15 @@ class SchematicTest extends TestCase
         $this->assertEquals(4361, $schematic->total());
     }
 
+    public function testGetsGearRatioTotalFromInput(): void
+    {
+        $schematic = new Schematic($this->getInput());
+
+        $schematic->process();
+
+        $this->assertEquals(467835, $schematic->gearRatioTotal());
+    }
+
     private function getInput(): \Iterator
     {
         return new \ArrayIterator([

@@ -38,6 +38,10 @@ class AocDay03 extends AocDay
 
         $this->output->info(sprintf('Total: %s', $total));
 
+        $gearRatio = $schematic->gearRatioTotal();
+
+        $this->output->info(sprintf('Gear ratio total: %s', $gearRatio));
+
         return Command::SUCCESS;
     }
 

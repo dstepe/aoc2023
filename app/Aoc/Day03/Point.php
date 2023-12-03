@@ -49,4 +49,18 @@ class Point
     {
         return $this->value === '.';
     }
+
+    public function isGear(): bool
+    {
+        return $this->value === '*';
+    }
+
+    public function isNeighbor(Point $point): bool
+    {
+        return
+            $point->row() >= $this->row - 1 &&
+            $point->row() <= $this->row + 1 &&
+            $point->column() >= $this->column - 1 &&
+            $point->column() <= $this->column + 1;
+    }
 }
