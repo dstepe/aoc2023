@@ -34,7 +34,7 @@ class AocDay04 extends AocDay
 
         $pile->process();
 
-        $total = $pile->totalPoints();
+        $total = $pile->totalCards();
 
         $this->output->info(sprintf('Total: %s', $total));
 

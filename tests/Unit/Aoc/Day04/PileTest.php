@@ -25,6 +25,15 @@ class PileTest extends TestCase
         $this->assertEquals(13, $pile->totalPoints());
     }
 
+    public function testCalculatesTotalCardNumbers(): void
+    {
+        $pile = new Pile($this->getInput());
+
+        $pile->process();
+
+        $this->assertEquals(30, $pile->totalCards());
+    }
+
     private function getInput(): \Iterator
     {
         return new \ArrayIterator([

@@ -33,6 +33,16 @@ class Card
         $this->numbers = $numbers;
     }
 
+    public function number(): int
+    {
+        return $this->id;
+    }
+
+    public function copyToNumber(): int
+    {
+        return $this->id + $this->winningCount();
+    }
+
     public function winningCount(): int
     {
         return $this->numbers->intersect($this->winningNumbers)->count();

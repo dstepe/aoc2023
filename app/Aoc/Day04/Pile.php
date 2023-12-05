@@ -8,6 +8,7 @@ class Pile
 {
     private \Iterator $input;
     private Collection $cards;
+    private int $count = 0;
 
     public function __construct(\Iterator $input)
     {
@@ -19,8 +20,13 @@ class Pile
     public function process(): void
     {
         foreach ($this->input as $input) {
-            $this->cards->add(Card::fromInput($input));
+            $card = Card::fromInput($input);
+            $this->cards->put($card->number(), $card->winningCount());
         }
+
+        $this->cards->keys()->each(function (int $cardNumber) {
+            $this->countCards($cardNumber);
+        });
     }
 
     public function countOfCards(): int
@@ -33,5 +39,23 @@ class Pile
         return $this->cards->sum(function (Card $card) {
             return $card->winningValue();
         });
+    }
+
+    public function totalCards(): int
+    {
+        return $this->count;
+    }
+
+    private function countCards(int $cardNumber): void
+    {
+        $this->count++;
+        $limit = $cardNumber + $this->cards->get($cardNumber);
+        for ($i = $cardNumber+ 1; $i <= $limit; $i++) {
+            $this->countCards($i);
+        }
+
+        if ($this->count % 1000 === 0) {
+            printf("count: %s\n", $this->count);
+        }
     }
 }
