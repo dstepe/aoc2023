@@ -16,13 +16,22 @@ class AlmanacTest extends TestCase
         $this->assertEquals(82, $almanac->mapSeedToLocation(79));
     }
 
+    public function testMapsLocationToSeed(): void
+    {
+        $almanac = new Almanac($this->getInput());
+
+        $almanac->process();
+
+        $this->assertEquals(79, $almanac->mapLocationToSeed(82));
+    }
+
     public function testFindsLowestLocation(): void
     {
         $almanac = new Almanac($this->getInput());
 
         $almanac->process();
 
-        $this->assertEquals(35, $almanac->lowestLocation());
+        $this->assertEquals(46, $almanac->lowestLocation());
     }
 
     private function getInput(): \Iterator
