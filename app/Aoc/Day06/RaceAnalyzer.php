@@ -8,28 +8,26 @@ class RaceAnalyzer
 {
     private \Iterator $input;
 
-    private array $times = [];
-    private array $distances = [];
-    private Collection $races;
+    private Race $race;
 
     public function __construct(\Iterator $input)
     {
         $this->input = $input;
-
-        $this->races = new Collection();
     }
 
     public function process(): void
     {
+        $time = null;
+        $distance = null;
         foreach ($this->input as $input) {
             if (preg_match('/^(\w+):(.*)/', $input, $matches)) {
                 switch ($matches[1]) {
                     case 'Time':
-                        $this->times = $this->parseNumbers(trim($matches[2]));
+                        $time = $this->parseNumber(trim($matches[2]));
                         break;
 
                     case 'Distance':
-                        $this->distances = $this->parseNumbers(trim($matches[2]));
+                        $distance = $this->parseNumber(trim($matches[2]));
                         break;
 
                     default:
@@ -38,31 +36,21 @@ class RaceAnalyzer
             }
         }
 
-        $this->makeRaces();
+        $this->race = new Race($time, $distance);
     }
 
     public function marginOfError(): int
     {
-        return $this->races->reduce(function (?int $c, Race $race) {
-            if (null === $c) {
-                $c = count($race->outperformingOptions());
-            } else {
-                $c *= count($race->outperformingOptions());
-            }
+        $options = $this->race->outperformingOptions();
 
-            return $c;
-        });
+        $start = $options[0]['time'];
+        $end = $options[count($options) - 1]['time'];
+
+        return $end - $start + 1; // to count the first one
     }
 
-    private function makeRaces(): void
+    private function parseNumber(string $input): int
     {
-        for ($i = 0, $iMax = count($this->times); $i < $iMax; $i++) {
-            $this->races->add(new Race($this->times[$i], $this->distances[$i]));
-        }
-    }
-
-    private function parseNumbers(string $input): array
-    {
-        return explode(' ', preg_replace('/ +/', ' ', $input));
+        return (int) str_replace(' ', '', $input);
     }
 }

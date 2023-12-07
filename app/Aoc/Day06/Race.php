@@ -19,6 +19,9 @@ class Race
 
         foreach ($this->allOptions() as $option) {
             if ($option['distance'] > $this->recordDistance) {
+                if (count($options) > 1) {
+                    array_pop($options);
+                }
                 $options[] = $option;
             }
         }

@@ -13,7 +13,7 @@ class RaceAnalyzerTest extends TestCase
 
         $analyzer->process();
 
-        $this->assertEquals(288, $analyzer->marginOfError());
+        $this->assertEquals(71503, $analyzer->marginOfError());
     }
 
     private function getInput(): \Iterator
