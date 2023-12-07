@@ -107,9 +107,23 @@ class Hand
 
     private function summarize(): void
     {
-        $this->summary = $this->cards->countBy(function (Card $card) {
+        $faceValues = $this->cards->countBy(function (Card $card) {
             return $card->label();
         })->sortDesc();
+
+        if ($faceValues->has('J')) {
+            $count = $faceValues->get('J');
+            $faceValues->forget('J');
+
+            if ($count === 5) {
+                $faceValues->put('A', $count);
+            } else {
+                $highCard = $faceValues->keys()[0];
+                $faceValues[$highCard] += $count;
+            }
+        }
+
+        $this->summary = $faceValues;
     }
 
     private function isFiveOfKind(): bool

@@ -44,10 +44,10 @@ class HandTest extends TestCase
             'One pair' => ['AAT98 123', Hand::ONE_PAIR],
             'High card' => ['T9876 123', Hand::HIGH_CARD],
             'Input one pair' => ['32T3K 765', Hand::ONE_PAIR],
-            'Input three of a kind 1' => ['T55J5 684', Hand::THREE_OF_KIND],
+            'Input three of a kind 1' => ['T55J5 684', Hand::FOUR_OF_KIND],
             'Input two pair 1' => ['KK677 28', Hand::TWO_PAIR],
-            'Input two pair 2' => ['KTJJT 220', Hand::TWO_PAIR],
-            'Input three of a kind 2' => ['QQQJA 483', Hand::THREE_OF_KIND],
+            'Input two pair 2' => ['KTJJT 220', Hand::FOUR_OF_KIND],
+            'Input three of a kind 2' => ['QQQJA 483', Hand::FOUR_OF_KIND],
         ];
     }
 
