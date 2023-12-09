@@ -13,7 +13,7 @@ class NavigatorTest extends TestCase
 
         $navigator->process();
 
-        $this->assertCount(3, $navigator->nodes());
+        $this->assertCount(8, $navigator->nodes());
     }
 
     public function testFindsStepsThroughNodes(): void
@@ -28,11 +28,16 @@ class NavigatorTest extends TestCase
     private function getInput(): \Iterator
     {
         return new \ArrayIterator([
-            'LLR',
+            'LR',
             '',
-            'AAA = (BBB, BBB)',
-            'BBB = (AAA, ZZZ)',
-            'ZZZ = (ZZZ, ZZZ)',
+            '11A = (11B, XXX)',
+            '11B = (XXX, 11Z)',
+            '11Z = (11B, XXX)',
+            '22A = (22B, XXX)',
+            '22B = (22C, 22C)',
+            '22C = (22Z, 22Z)',
+            '22Z = (22B, 22B)',
+            'XXX = (XXX, XXX)',
         ]);
     }
 }

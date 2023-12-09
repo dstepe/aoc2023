@@ -6,9 +6,6 @@ use Illuminate\Support\Collection;
 
 class Navigator
 {
-    public const START_NODE = 'AAA';
-    public const END_NODE = 'ZZZ';
-
     private \Iterator $input;
 
     private ?Instructions $instructions = null;
@@ -42,26 +39,49 @@ class Navigator
 
     public function steps(): int
     {
-        $current = self::START_NODE;
+        $current = $this->startNodes();
 
         $count = 0;
         foreach ($this->instructions->steps() as $direction) {
             $count++;
 
-            /** @var Node $node */
-            $node = $this->nodes->get($current);
+            $current->transform(function (string $label) use ($direction) {
+                /** @var Node $node */
+                $node = $this->nodes->get($label);
 
-            /** @var Node $next */
-            $next = $this->nodes->get($node->nodeForDirection($direction));
+                if (null === $node) {
+                    throw new \Exception('Unable to find node ' . $label);
+                }
 
-            if ($next->label() === self::END_NODE) {
+                /** @var Node $next */
+                return $this->nodes->get($node->nodeForDirection($direction))->label();
+            });
+
+            $atEnd = $current->filter(function (string $label) {
+                return preg_match('/.{2}Z$/', $label);
+            });
+
+            if ($current->count() === $atEnd->count()) {
                 return $count;
             }
 
-            $current = $next->label();
+            if ($count % 1000 === 0) {
+                print "Count $count\n";
+            }
         }
 
         throw new \InvalidArgumentException('Could not find steps');
+    }
+
+    public function startNodes(): Collection
+    {
+        return $this->nodes->reduce(function (Collection $c, Node $node) {
+            if (preg_match('/.{2}A$/', $node->label())) {
+                $c->add($node->label());
+            }
+
+            return $c;
+        }, new Collection());
     }
 
     private function setInstructionsFromInput($input): void

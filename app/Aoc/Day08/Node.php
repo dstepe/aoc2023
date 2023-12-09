@@ -13,7 +13,7 @@ class Node
 
     public static function fromInput(string $input): self
     {
-        if (!preg_match('/([A-Z]{3}) = \(([A-Z]{3}), ([A-Z]{3})\)/', $input, $matches)) {
+        if (!preg_match('/([0-9A-Z]{3}) = \(([0-9A-Z]{3}), ([0-9A-Z]{3})\)/', $input, $matches)) {
             throw new \InvalidArgumentException('Could not parse node input');
         }
         return new self($matches[1], $matches[2], $matches[3]);
