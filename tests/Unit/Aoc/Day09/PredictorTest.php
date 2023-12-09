@@ -13,7 +13,7 @@ class PredictorTest extends TestCase
 
         $predictor->process();
 
-        $this->assertEquals(114, $predictor->sum());
+        $this->assertEquals(2, $predictor->sum());
     }
 
     private function getInput(): \Iterator

@@ -25,12 +25,13 @@ class ReadingHistory
     public function nextValue(): int
     {
         $this->prepare();
-        $this->sequences->each(function (Collection $sequence) {
-            print $sequence->join(' ') . "\n";
-        });
         $this->extrapolate();
 
-        return $this->readings->last();
+//        $this->sequences->each(function (Collection $sequence) {
+//            print $sequence->join(' ') . "\n";
+//        });
+
+        return $this->readings->first();
     }
 
     private function prepare(): void
@@ -51,10 +52,10 @@ class ReadingHistory
 
     private function extrapolate(): void
     {
-        $this->sequences->last()->add(0);
+        $this->sequences->last()->prepend(0);
 
         $this->sequences->reverse()->sliding(2)->eachSpread(function (Collection $previous, Collection $next) {
-            $next->add($previous->last() + $next->last());
+            $next->prepend($next->first() - $previous->first());
         });
     }
 
