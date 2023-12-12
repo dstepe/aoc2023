@@ -14,6 +14,8 @@ class Position
     private ?Position $southNeighbor = null;
     private ?Position $westNeighbor = null;
 
+    private bool $isContained = false;
+
     public function __construct(Type $type, int $row, int $column)
     {
         $this->type = $type;
@@ -98,6 +100,16 @@ class Position
     public function enterFrom(string $direction): void
     {
         $this->enteredFrom = $direction;
+    }
+
+    public function setIsContained(): void
+    {
+        $this->isContained = true;
+    }
+
+    public function containedLabel(): string
+    {
+        return $this->isContained ? 'I' : 'O';
     }
 
     private function selectMoveFrom(array $candidates): string
